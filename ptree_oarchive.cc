@@ -25,18 +25,33 @@ namespace BPT {
 
   ptree_oarchive::ptree_oarchive(boost::property_tree::ptree &pt, unsigned int flags) :
     boost::archive::detail::common_oarchive<ptree_oarchive>(flags),
-    m_pt(pt), m_cur_pt(&m_pt), m_optimize0(true), m_optimizeJson(true)
+    m_pt(pt), m_cur_pt(&m_pt), m_optimize0(false), m_optimizeJson(true)
   {
-    m_opt0.insert(ptree_archive_object_id);
-    m_opt0.insert(ptree_archive_object_reference);
-    m_opt0.insert(ptree_archive_class_id);
-    m_opt0.insert(ptree_archive_class_id_reference);
-    m_opt0.insert(ptree_archive_tracking);
-    m_opt0.insert(ptree_archive_version);
-    m_opt0.insert(boost_internal_item_version);
+    if(m_optimize0)
+    {
+      m_opt0.insert(ptree_archive_object_id);
+      m_opt0.insert(ptree_archive_object_reference);
+      m_opt0.insert(ptree_archive_class_id);
+      m_opt0.insert(ptree_archive_class_id_reference);
+      m_opt0.insert(ptree_archive_tracking);
+      m_opt0.insert(ptree_archive_version);
+      m_opt0.insert(boost_internal_item_version);
+    }
+
+    m_reserved.insert(ptree_archive_object_id);
+    m_reserved.insert(ptree_archive_object_reference);
+    m_reserved.insert(ptree_archive_class_id);
+    m_reserved.insert(ptree_archive_class_id_reference);
+    m_reserved.insert(ptree_archive_class_name);
+    m_reserved.insert(ptree_archive_tracking);
+    m_reserved.insert(ptree_archive_version);
+    m_reserved.insert(ptree_archive_signature);
+    m_reserved.insert(boost_internal_count);
+    m_reserved.insert(boost_internal_item);
 
       // we do need so big signature - just remove it or make it shorter?
       // write_attribute(ptree_archive_signature, boost::archive::BOOST_ARCHIVE_SIGNATURE());
+
     write_attribute(ptree_archive_version, boost::archive::BOOST_ARCHIVE_VERSION());
   }
   

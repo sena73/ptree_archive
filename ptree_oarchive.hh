@@ -5,6 +5,7 @@
 #include <ostream>
 #include <cstddef> // size_t
 #include <set>
+#include <map>
 
 #include <boost/mpl/assert.hpp>
 #include <boost/archive/detail/common_oarchive.hpp>
@@ -27,8 +28,9 @@ namespace BPT {
     boost::property_tree::ptree &m_pt;
     boost::property_tree::ptree *m_cur_pt;
     bool m_optimize0; ///< if true, then do not store integer attributes (like class_id) which are equal to 0
-    bool m_optimizeJson; ///< if true , then store containers in json-friendly way (list of values with empty name), otherwise store container in xml-friendlt way (list of values with the name equal to 'item')
+    bool m_optimizeJson; ///< if true , then store containers in json-friendly way (list of values with empty name), otherwise store container in xml-friendly way (list of values with the name equal to 'item')
     std::set<std::string> m_opt0;
+    std::set<std::string> m_reserved; ///< reserved names (not allowed to use as field name)
     
     void init();
     void write_attribute(const char *attribute_name, int t);
@@ -38,25 +40,26 @@ namespace BPT {
       // error and should be trapped here.
     template<class T>
     void save_override(T & t)
-      {
-          // If your program fails to compile here, its most likely due to
-          // not specifying an nvp wrapper around the variable to
-          // be serialized.
-        BOOST_MPL_ASSERT((boost::serialization::is_wrapper< T >));
-        this->detail_common_oarchive::save_override(t);
-      }
+    {
+        // If your program fails to compile here, its most likely due to
+        // not specifying an nvp wrapper around the variable to
+        // be serialized.
+      BOOST_MPL_ASSERT((boost::serialization::is_wrapper< T >));
+      this->detail_common_oarchive::save_override(t);
+    }
 
       // special treatment for name-value pairs.
     template<class T>
     void save_override(
       const ::boost::serialization::nvp< T > & t
-                       ){
+                       )
+    {
       boost::property_tree::ptree item;
       boost::property_tree::ptree *save_cur_pt = m_cur_pt;
       m_cur_pt = &item;
       this->detail_common_oarchive::save_override(t.const_value());
       m_cur_pt = save_cur_pt;
-      std::string tname((t.name() == 0) ? "item" : t.name());
+      std::string tname((t.name() == 0) ? boost_internal_item : t.name());
 
         // If we would like to serialize this ptree to json, then we can
         // not just insert lot of "item" elements - json does not allow this.
@@ -64,10 +67,10 @@ namespace BPT {
         // One can also consult "count" attribute which is written just before any array - it is
         // not needed because we can reuse ptree::count()
       bool normal_insert = true;
-      if(tname == "item" && m_optimizeJson)
+      if(tname == boost_internal_item && m_optimizeJson)
       {
           // check count attr and/or existence of another "item"
-        boost::property_tree::ptree::assoc_iterator it = m_cur_pt->find("item");
+        boost::property_tree::ptree::assoc_iterator it = m_cur_pt->find(boost_internal_item);
         if(it != m_cur_pt->not_found())
         {
           normal_insert = false;

@@ -188,6 +188,8 @@ int main(int argc, char** argv)
     outjson = outjsonstream.str();
   }
 
+  std::cout << "resulting JSON: " << outjson;
+
     // read from ptree
   {
     BPT::ptree_iarchive jar(pt);
