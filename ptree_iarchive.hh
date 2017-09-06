@@ -16,7 +16,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "basic_ptree_archive.hh"
 
-namespace BPT {
+namespace bpta {
 
   template <typename T>
   void setInt(T&, int)
@@ -175,6 +175,6 @@ namespace BPT {
 }
 
 // required by export
-BOOST_SERIALIZATION_REGISTER_ARCHIVE(BPT::ptree_iarchive)
+BOOST_SERIALIZATION_REGISTER_ARCHIVE(bpta::ptree_iarchive)
 
 #endif // __PTREE_IARCHIVE_HH__

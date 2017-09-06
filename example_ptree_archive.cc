@@ -177,7 +177,7 @@ int main(int argc, char** argv)
   boost::property_tree::ptree pt;
   std::string outjson;
   {  
-    BPT::ptree_oarchive jar(pt);
+    bpta::ptree_oarchive jar(pt);
 
       // save the data
     jar & BOOST_SERIALIZATION_NVP(test_all);
@@ -192,7 +192,7 @@ int main(int argc, char** argv)
 
     // read from ptree
   {
-    BPT::ptree_iarchive jar(pt);
+    bpta::ptree_iarchive jar(pt);
    
       // Load the data  
     jar & boost::serialization::make_nvp("test_all"  , test_all_restored);
@@ -213,7 +213,7 @@ int main(int argc, char** argv)
   boost::property_tree::ptree pt2;
   std::string outjson2;
   {  
-    BPT::ptree_oarchive jar(pt2);
+    bpta::ptree_oarchive jar(pt2);
 
     jar & boost::serialization::make_nvp("test_all", test_all_restored);
 

@@ -20,12 +20,12 @@
 #include <boost/archive/iterators/ostream_iterator.hpp>
 
 
-namespace BPT {
+namespace bpta {
 
 
   ptree_oarchive::ptree_oarchive(boost::property_tree::ptree &pt, unsigned int flags) :
     boost::archive::detail::common_oarchive<ptree_oarchive>(flags),
-    m_pt(pt), m_cur_pt(&m_pt), m_optimize0(false), m_optimizeJson(true)
+    m_pt(pt), m_cur_pt(&m_pt), m_optimize0(true), m_optimizeJson(true)
   {
     if(m_optimize0)
     {
@@ -154,12 +154,12 @@ namespace BPT {
     if(std::uncaught_exception()) return;
   }
 
-} // namespace BPT
+} // namespace bpta
 
 namespace boost {
   namespace archive {
 
-    template class detail::archive_serializer_map<BPT::ptree_oarchive>;
+    template class detail::archive_serializer_map<bpta::ptree_oarchive>;
       //template class ptree_oarchive_impl<ptree_oarchive> ;
   
   } // namespace archive

@@ -17,7 +17,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "basic_ptree_archive.hh"
 
-namespace BPT {
+namespace bpta {
   
   class ptree_oarchive : public boost::archive::detail::common_oarchive<ptree_oarchive>
   {
@@ -121,6 +121,6 @@ namespace BPT {
 }
 
 // required by export
-BOOST_SERIALIZATION_REGISTER_ARCHIVE(BPT::ptree_oarchive)
+BOOST_SERIALIZATION_REGISTER_ARCHIVE(bpta::ptree_oarchive)
 
 #endif // __PTREE_OARCHIVE_HH__

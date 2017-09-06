@@ -1,7 +1,7 @@
 #ifndef __BASIC_PTREE_ARCHIVE_HH__
 #define __BASIC_PTREE_ARCHIVE_HH__
 
-namespace BPT {
+namespace bpta {
 // constant strings used in ptree i/o
 
   extern const char *ptree_archive_object_id;

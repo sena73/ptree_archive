@@ -1,6 +1,6 @@
 #include "basic_ptree_archive.hh"
 
-namespace BPT {
+namespace bpta {
 
   const char *ptree_archive_object_id          = "__oid" ;
   const char *ptree_archive_object_reference   = "__oidr";

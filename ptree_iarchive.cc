@@ -10,7 +10,7 @@
 
 #include "basic_ptree_archive.hh"
 
-namespace BPT {
+namespace bpta {
 
   ptree_iarchive::ptree_iarchive(const boost::property_tree::ptree &pt, unsigned int flags) :
     boost::archive::detail::common_iarchive<ptree_iarchive>(flags),
@@ -137,10 +137,10 @@ namespace BPT {
       return;
   }
   
-} // namespace BPT
+} // namespace bpta
 
 namespace boost {
   namespace archive {
-    template class detail::archive_serializer_map<BPT::ptree_iarchive>;
+    template class detail::archive_serializer_map<bpta::ptree_iarchive>;
   } // namespace archive
 } // namespace boost
