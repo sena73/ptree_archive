@@ -9,6 +9,8 @@
 #include <boost/serialization/set.hpp>
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/shared_ptr.hpp>
+#include <boost/serialization/export.hpp>
+
 //#include <boost/archive/text_oarchive.hpp>   
 //#include <boost/archive/text_iarchive.hpp>   
 //#include <boost/archive/xml_oarchive.hpp>   
@@ -24,12 +26,46 @@
 #include "ptree_iarchive.hh"
 
 
-
 class Info  
-{  
+{
+public:
+  Info(int setint, float setfloat, std::string setstring)
+  {
+    set(setint, setfloat, setstring);
+  }
+
+  Info()
+  {
+    set(0, 0., "");
+  }
+
+
+  virtual ~Info()
+  {}
+
+  virtual bool operator==(const Info &other) const
+  {
+    if(&other == this) return true;
+    return
+      m_int == other.m_int &&
+      m_float == other.m_float &&
+      m_string == other.m_string &&
+      filenames == other.filenames;
+  }
+
+  void AddFilename( const std::string& filename );
+  virtual void Print() const;
+  void set(int setint, float setfloat, std::string setstring)
+    {
+      m_int = setint;
+      m_float = setfloat;
+      m_string = setstring;
+    }
+
 private:  
     // Allow serialization to access non-public data members.  
-  friend class boost::serialization::access;  
+  friend class boost::serialization::access;
+
 
   template<class Archive>
   inline void serialize(Archive & ar, const unsigned int /* version */)
@@ -44,28 +80,58 @@ private:
   int m_int;
   float m_float;
   std::string m_string;
-   
+};
+
+
+class ExtendedInfo : public Info
+{
 public:
-  bool operator==(const Info &other) const
+  ExtendedInfo(int setint, float setfloat, std::string setstring, const std::string &einfo)
+    : Info(setint, setfloat, setstring), m_einfo(einfo)
   {
-    if(&other == this) return true;
-    return
-      m_int == other.m_int &&
-      m_float == other.m_float &&
-      m_string == other.m_string &&
-      filenames == other.filenames;
   }
 
-  void AddFilename( const std::string& filename );      
-  void Print() const;
-  void set(int setint, float setfloat, std::string setstring)
+  ExtendedInfo()
+    : Info(), m_einfo("")
+  {
+  }
+
+  virtual ~ExtendedInfo()
+  {}
+
+
+  virtual bool operator==(const ExtendedInfo &other) const
+  {
+    if(&other == this) return true;
+
+    return
+      Info::operator==(other) &&
+      m_einfo == other.m_einfo;
+  }
+
+  virtual void Print() const;
+
+  void eset(int setint, float setfloat, const std::string &setstring, const std::string &seteinfo)
     {
-      m_int = setint;
-      m_float = setfloat;
-      m_string = setstring;
+      Info::set(setint, setfloat, setstring);
+      m_einfo = seteinfo;
     }
+private:
+    // Allow serialization to access non-public data members.
+  friend class boost::serialization::access;
+
+  template<class Archive>
+  inline void serialize(Archive & ar, const unsigned int /* version */)
+  {
+    ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(Info);
+    ar & BOOST_SERIALIZATION_NVP(m_einfo);
+  }
+
+  std::string m_einfo;
 };
+
   
+
    
 void Info::Print() const 
 {
@@ -75,6 +141,15 @@ void Info::Print() const
             std::ostream_iterator<std::string>(std::cout, " "));
   std::cout << "]\n";
 }
+
+
+void ExtendedInfo::Print() const
+{
+  Info::Print();
+  std::cout << "ExtendedInfo: " << m_einfo << "\n";
+}
+
+
 
 void Info::AddFilename( const std::string& filename )  
 {  
@@ -88,8 +163,9 @@ bool operator==(const boost::shared_ptr<A> &one, const boost::shared_ptr<A> &ano
   return (*one) == (*another);
 }
 
-struct TestAll
+class TestAll
 {
+public:
   bool operator==(const TestAll &other) const
   {
     if(&other == this) return true;
@@ -99,6 +175,7 @@ struct TestAll
       infosp == other.infosp &&
       info1 == other.info1 &&
       info2 == other.info2 &&
+      einfo == other.einfo &&
       setmaplistvector == other.setmaplistvector;
   }
   
@@ -108,6 +185,7 @@ struct TestAll
   {
     ar & BOOST_SERIALIZATION_NVP(info1);
     ar & BOOST_SERIALIZATION_NVP(info2);
+    ar & BOOST_SERIALIZATION_NVP(einfo);
     ar & BOOST_SERIALIZATION_NVP(infs);
     ar & BOOST_SERIALIZATION_NVP(infs0);
     ar & BOOST_SERIALIZATION_NVP(infosp);
@@ -117,8 +195,13 @@ struct TestAll
   std::vector<Info> infs, infs0;
   std::vector<boost::shared_ptr<Info> > infosp;
   Info info1, info2;
+  ExtendedInfo einfo;
   std::set<std::map<std::list<std::string>, std::vector<std::string> > > setmaplistvector;
 };
+
+
+//BOOST_CLASS_EXPORT_GUID(Info, "Info")
+BOOST_CLASS_EXPORT_GUID(ExtendedInfo, "ExtendedInfo")
 
    
 int main(int argc, char** argv)   
@@ -139,16 +222,22 @@ int main(int argc, char** argv)
   test_all.infs.push_back(test_all.info1);
   test_all.infs.push_back(test_all.info2 );
 
-  boost::shared_ptr<Info> infop1(new Info()), infop2(new Info());
+  test_all.einfo.AddFilename("eThisFile.txt" );
+  test_all.einfo.AddFilename("eThatFile.txt" );
+  test_all.einfo.AddFilename("eOtherFile.txt");
+  test_all.einfo.set(10, 10.1, "einfo sample");
+
+  boost::shared_ptr<Info>
+    infop1(new ExtendedInfo(1, 1.1, "one ptr", "extended1")),
+    infop2(new ExtendedInfo(2, 2.2, "two ptr", "extended2"));
+
   infop1->AddFilename( "ThisFile.txt" );  
   infop1->AddFilename( "ThatFile.txt" );  
   infop1->AddFilename( "OtherFile.txt" );  
-  infop1->set(1, 1.1, "one ptr");
  
   infop2->AddFilename( "ABC" );
   infop2->AddFilename( "123" );
   infop2->AddFilename( "XYZ" );
-  infop2->set(2, 2.2, "two ptr");
  
   test_all.infosp.push_back( infop1 );
   test_all.infosp.push_back( infop2 );
