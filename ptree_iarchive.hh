@@ -13,6 +13,7 @@
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
+#include <boost/archive/shared_ptr_helper.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include "basic_ptree_archive.hh"
 
@@ -37,7 +38,8 @@ namespace bpta {
   }
 
   
-  class ptree_iarchive : public boost::archive::detail::common_iarchive<ptree_iarchive>
+  class ptree_iarchive : public boost::archive::detail::common_iarchive<ptree_iarchive>,
+                         public boost::archive::detail::shared_ptr_helper
   {
     typedef boost::archive::detail::common_iarchive<ptree_iarchive> detail_common_iarchive;
     friend class boost::archive::detail::interface_iarchive<ptree_iarchive>;
@@ -55,19 +57,19 @@ namespace bpta {
       // Anything not an attribute and not a name-value pair is an
       // error and should be trapped here.
     template<class T>
-    void load_override(T & t)
+    void load_override(T & t OVERRIDE_OLD_PARAM_TYPE)
       {
           // If your program fails to compile here, its most likely due to
           // not specifying an nvp wrapper around the variable to
           // be serialized.
         BOOST_MPL_ASSERT((boost::serialization::is_wrapper< T >));
-        this->detail_common_iarchive::load_override(t);
+        this->detail_common_iarchive::load_override(t OVERRIDE_OLD_PARAM_PASS);
       }
 
       // special treatment for name-value pairs.
     template<class T>
     void load_override(
-      const ::boost::serialization::nvp< T > & t
+      const ::boost::serialization::nvp< T > & t OVERRIDE_OLD_PARAM_TYPE
                        ){
       std::string tname((t.name() == 0 || t.name()[0] == 0) ? boost_internal_item : t.name());
       if(tname == boost_internal_count)
@@ -117,7 +119,7 @@ namespace bpta {
         boost::property_tree::ptree::const_assoc_iterator save_it_nf = m_cur_pt->not_found();
         std::swap(save_item_it, m_item_assoc_it);
         std::swap(save_it_nf  , m_it_nf        );
-        this->detail_common_iarchive::load_override(t.value());
+        this->detail_common_iarchive::load_override(t.value() OVERRIDE_OLD_PARAM_PASS);
         std::swap(save_item_it, m_item_assoc_it);
         std::swap(save_it_nf, m_it_nf);
         m_item_assoc_it++;
@@ -143,7 +145,7 @@ namespace bpta {
       std::swap(save_it_nf  , m_it_nf        );
       const boost::property_tree::ptree *save_cur_pt = m_cur_pt;
       m_cur_pt = &it->second;
-      this->detail_common_iarchive::load_override(t.value());
+      this->detail_common_iarchive::load_override(t.value() OVERRIDE_OLD_PARAM_PASS);
       std::swap(save_item_it, m_item_assoc_it);
       std::swap(save_it_nf, m_it_nf);
       m_cur_pt = save_cur_pt;
@@ -151,14 +153,14 @@ namespace bpta {
 
       // specific overrides for attributes - not name value pairs so we
       // want to trap them before the above "fall through"
-    void load_override(boost::archive::class_id_type & t);
-    void load_override(boost::archive::class_id_optional_type & t);
+    void load_override(boost::archive::class_id_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void load_override(boost::archive::class_id_optional_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
       //  void load_override(boost::archive::class_id_reference_type & t);
-    void load_override(boost::archive::object_id_type & t);
+    void load_override(boost::archive::object_id_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
       //    void load_override(boost::archive::object_reference_type & t);
-    void load_override(boost::archive::version_type & t);
-    void load_override(boost::archive::class_name_type & t);
-    void load_override(boost::archive::tracking_type & t);
+    void load_override(boost::archive::version_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void load_override(boost::archive::class_name_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void load_override(boost::archive::tracking_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
 
   public:
     ptree_iarchive(const boost::property_tree::ptree &pt, unsigned int flags = 0);

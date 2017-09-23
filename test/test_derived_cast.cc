@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "extended_info.hh"
 #include "extended_info2.hh"
 #include "test_derived_cast.hh"

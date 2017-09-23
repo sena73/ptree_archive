@@ -58,52 +58,47 @@ namespace bpta {
   }
 
 
-  void ptree_iarchive::load_override(boost::archive::object_id_type &val)
+  void ptree_iarchive::load_override(boost::archive::object_id_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     int ival;
     read_attribute(ptree_archive_object_id, ptree_archive_object_reference, ival);
     val = boost::archive::object_id_type(ival);
   }
 
-
     // not needed: void ptree_iarchive::load_override(boost::archive::object_reference_type & t) ...
 
-  void ptree_iarchive::load_override(boost::archive::version_type &val)
+  void ptree_iarchive::load_override(boost::archive::version_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     int ival;
     read_attribute(ptree_archive_version, 0, ival);
     val = boost::archive::version_type(ival);
   }
 
-
-  void ptree_iarchive::load_override(boost::archive::class_id_type &val)
+  void ptree_iarchive::load_override(boost::archive::class_id_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     int ival;
     read_attribute(ptree_archive_class_id, ptree_archive_class_id_reference, ival);
     val = boost::archive::class_id_type(ival);
   }
 
-  void ptree_iarchive::load_override(boost::archive::class_id_optional_type &)
+  void ptree_iarchive::load_override(boost::archive::class_id_optional_type & OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
-     // empty in xml_iarchive... not sure what is it for?
+     // empty in xml_iarchive... not sure what is it for? - sena
   }
  
-  void ptree_iarchive::load_override(boost::archive::class_name_type &val)
+  void ptree_iarchive::load_override(boost::archive::class_name_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     std::string sval;
     read_attribute(ptree_archive_class_name, sval);
     val = boost::archive::class_name_type(sval.c_str());
   }
 
-
-  void
-  ptree_iarchive::load_override(boost::archive::tracking_type & val)
+  void ptree_iarchive::load_override(boost::archive::tracking_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     int ival;
     read_attribute(ptree_archive_tracking, 0, ival);
     val = boost::archive::tracking_type(ival);
   }
-
 
   void
   ptree_iarchive::init()

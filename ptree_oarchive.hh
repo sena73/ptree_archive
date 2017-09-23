@@ -18,7 +18,7 @@
 #include "basic_ptree_archive.hh"
 
 namespace bpta {
-  
+
   class ptree_oarchive : public boost::archive::detail::common_oarchive<ptree_oarchive>
   {
     typedef boost::archive::detail::common_oarchive<ptree_oarchive> detail_common_oarchive;
@@ -39,25 +39,25 @@ namespace bpta {
       // Anything not an attribute and not a name-value pair is an
       // error and should be trapped here.
     template<class T>
-    void save_override(T & t)
+    void save_override(T & t OVERRIDE_OLD_PARAM_TYPE)
     {
         // If your program fails to compile here, its most likely due to
         // not specifying an nvp wrapper around the variable to
         // be serialized.
       BOOST_MPL_ASSERT((boost::serialization::is_wrapper< T >));
-      this->detail_common_oarchive::save_override(t);
+      this->detail_common_oarchive::save_override(t OVERRIDE_OLD_PARAM_PASS);
     }
 
       // special treatment for name-value pairs.
     template<class T>
     void save_override(
-      const ::boost::serialization::nvp< T > & t
+      const ::boost::serialization::nvp< T > & t OVERRIDE_OLD_PARAM_TYPE
                        )
     {
       boost::property_tree::ptree item;
       boost::property_tree::ptree *save_cur_pt = m_cur_pt;
       m_cur_pt = &item;
-      this->detail_common_oarchive::save_override(t.const_value());
+      this->detail_common_oarchive::save_override(t.const_value() OVERRIDE_OLD_PARAM_PASS);
       m_cur_pt = save_cur_pt;
       std::string tname((t.name() == 0) ? boost_internal_item : t.name());
 
@@ -95,16 +95,17 @@ namespace bpta {
       }
     }
 
+
       // specific overrides for attributes - not name value pairs so we
       // want to trap them before the above "fall through"
-    void save_override(const boost::archive::class_id_type & t);
-    void save_override(const boost::archive::class_id_optional_type & t);
-    void save_override(const boost::archive::class_id_reference_type & t);
-    void save_override(const boost::archive::object_id_type & t);
-    void save_override(const boost::archive::object_reference_type & t);
-    void save_override(const boost::archive::version_type & t);
-    void save_override(const boost::archive::class_name_type & t);
-    void save_override(const boost::archive::tracking_type & t);
+    void save_override(const boost::archive::class_id_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::class_id_optional_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::class_id_reference_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::object_id_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::object_reference_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::version_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::class_name_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
+    void save_override(const boost::archive::tracking_type & t OVERRIDE_OLD_PARAM_TYPE_EMPTY);
 
   public:
     ptree_oarchive(boost::property_tree::ptree &pt, unsigned int flags = 0);

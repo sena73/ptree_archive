@@ -1,6 +1,21 @@
 #ifndef __BASIC_PTREE_ARCHIVE_HH__
 #define __BASIC_PTREE_ARCHIVE_HH__
 
+#include <boost/version.hpp>
+
+#if BOOST_VERSION <= 105500
+ #define OVERRIDE_OLD_PARAM_TYPE_EMPTY , int
+ #define OVERRIDE_OLD_PARAM_TYPE , int override_old_param
+ #define OVERRIDE_OLD_PARAM_PASS , override_old_param
+// #define OVERRIDE_OLD_PARAM_PASS0 , 0
+#else
+ #define OVERRIDE_OLD_PARAM_TYPE_EMPTY
+ #define OVERRIDE_OLD_PARAM_TYPE
+ #define OVERRIDE_OLD_PARAM_PASS
+ #define OVERRIDE_OLD_PARAM_PASS0
+#endif
+
+
 namespace bpta {
 // constant strings used in ptree i/o
 

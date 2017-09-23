@@ -74,59 +74,52 @@ namespace bpta {
   }
 
 
-  void ptree_oarchive::save_override(const boost::archive::object_id_type & val)
+  void ptree_oarchive::save_override(const boost::archive::object_id_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     const unsigned int uival = val;
     write_attribute(ptree_archive_object_id, uival);
   }
 
-
-  void ptree_oarchive::save_override(const boost::archive::object_reference_type & val)
+  void ptree_oarchive::save_override(const boost::archive::object_reference_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     const unsigned int uival = val;
     write_attribute(ptree_archive_object_reference, val);
   }
 
 
-  void ptree_oarchive::save_override(const boost::archive::version_type & val)
+  void ptree_oarchive::save_override(const boost::archive::version_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     const unsigned int uival = val;
     write_attribute(ptree_archive_version, uival);
   }
 
-
-  void ptree_oarchive::save_override(const boost::archive::class_id_type & val)
+  void ptree_oarchive::save_override(const boost::archive::class_id_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     write_attribute(ptree_archive_class_id, val);
   }
 
-
-  void ptree_oarchive::save_override(const boost::archive::class_id_reference_type & val)
+  void ptree_oarchive::save_override(const boost::archive::class_id_reference_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     write_attribute(ptree_archive_class_id_reference, val);
   }
 
 
-  void ptree_oarchive::save_override(const boost::archive::class_id_optional_type & val)
+  void ptree_oarchive::save_override(const boost::archive::class_id_optional_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     write_attribute(ptree_archive_class_id, val);
   }
  
 
-  void ptree_oarchive::save_override(const boost::archive::class_name_type & val)
+  void ptree_oarchive::save_override(const boost::archive::class_name_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     const char * chval = val;
     write_attribute(ptree_archive_class_name, chval);
   }
 
-
-  void
-  ptree_oarchive::save_override(const boost::archive::tracking_type & val)
+  void ptree_oarchive::save_override(const boost::archive::tracking_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     write_attribute(ptree_archive_tracking, val.t);
   }
-
-
 
   class save_bin : public boost::archive::basic_text_oprimitive<std::ostringstream>
   { 
@@ -160,7 +153,7 @@ namespace boost {
   namespace archive {
 
     template class detail::archive_serializer_map<bpta::ptree_oarchive>;
-      //template class ptree_oarchive_impl<ptree_oarchive> ;
+			//template class ptree_oarchive_impl<ptree_oarchive> ;
   
   } // namespace archive
 } // namespace boost

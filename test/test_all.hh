@@ -27,7 +27,7 @@ public:
   void populate_with_test_data();
   
   template<class Archive>
-  inline void serialize(Archive & ar, const unsigned int /* version */)
+  void serialize(Archive & ar, const unsigned int /* version */)
   {
     ar & BOOST_SERIALIZATION_NVP(info1);
     ar & BOOST_SERIALIZATION_NVP(info2);
