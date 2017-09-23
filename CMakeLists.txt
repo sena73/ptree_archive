@@ -1,7 +1,7 @@
 # Untested with previous versions, yet should work
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.6)
 
-#project(bptsa)
+#set (CMAKE_CXX_FLAGS "-ftemplate-backtrace-limit=0")
 
 project(bptsa VERSION 1.0.1 LANGUAGES CXX)
 
