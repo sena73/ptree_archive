@@ -13,7 +13,9 @@
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
+#if BOOST_VERSION <= 105500
 #include <boost/archive/shared_ptr_helper.hpp>
+#endif
 #include <boost/property_tree/ptree.hpp>
 #include "basic_ptree_archive.hh"
 
@@ -38,8 +40,10 @@ namespace bpta {
   }
 
   
-  class ptree_iarchive : public boost::archive::detail::common_iarchive<ptree_iarchive>,
-                         public boost::archive::detail::shared_ptr_helper
+  class ptree_iarchive : public boost::archive::detail::common_iarchive<ptree_iarchive>
+#if BOOST_VERSION <= 105500
+	, public boost::archive::detail::shared_ptr_helper
+#endif
   {
     typedef boost::archive::detail::common_iarchive<ptree_iarchive> detail_common_iarchive;
     friend class boost::archive::detail::interface_iarchive<ptree_iarchive>;
