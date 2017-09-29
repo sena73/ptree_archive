@@ -1,7 +1,9 @@
-//#define BOOST_ARCHIVE_SOURCE
-//#include <boost/serialization/config.hpp>
+#define BOOST_ARCHIVE_SOURCE
+#include <boost/serialization/config.hpp>
+
 #include "ptree_oarchive.hh"
 #include <boost/archive/detail/archive_serializer_map.hpp>
+#include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/basic_text_oprimitive.hpp>
 
 // explicitly instantiate for this type of ptree
@@ -153,6 +155,8 @@ namespace boost {
   namespace archive {
 
     template class detail::archive_serializer_map<bpta::ptree_oarchive>;
+//    template class basic_text_iarchive<text_iarchive> ;
+//    template class text_iarchive_impl<text_iarchive> ;
 			//template class ptree_oarchive_impl<ptree_oarchive> ;
   
   } // namespace archive

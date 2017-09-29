@@ -1,4 +1,10 @@
+#define BOOST_ARCHIVE_SOURCE
+#include <boost/serialization/config.hpp>
+
 #include "ptree_iarchive.hh"
+#include <boost/archive/detail/archive_serializer_map.hpp>
+#include <boost/archive/detail/auto_link_archive.hpp>
+#include <boost/archive/basic_text_iprimitive.hpp>
 
 #include <istream>
 #include <string>
