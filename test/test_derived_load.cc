@@ -23,9 +23,8 @@ int main(int argc, char** argv)
 
     // load from text file
   {  
+    boost::shared_ptr<InfoBase> baseptr1, baseptr2;
     boost::filesystem::ifstream intextstream("test_output.txt");
-    boost::shared_ptr<InfoBase> baseptr1;
-    boost::shared_ptr<InfoBase> baseptr2;
     boost::archive::text_iarchive tar(intextstream);
 
       // load the data
@@ -39,6 +38,7 @@ int main(int argc, char** argv)
   
     // load from file->json->ptree
   {  
+    boost::shared_ptr<InfoBase> baseptr1, baseptr2;
     boost::property_tree::ptree pt;
     boost::filesystem::ifstream injsonstream("test_output.json");
     read_json(injsonstream, pt);
