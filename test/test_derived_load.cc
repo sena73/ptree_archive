@@ -19,15 +19,13 @@
 
 int main(int argc, char** argv)   
 {
-//  boost::shared_ptr<InfoBase> baseptr1;
-//  boost::shared_ptr<InfoBase> baseptr2;
-  boost::shared_ptr<ExtendedInfo> baseptr1;
-  boost::shared_ptr<ExtendedInfo2> baseptr2;
 
 
     // load from text file
-  boost::filesystem::ifstream intextstream("test_output.txt");
   {  
+    boost::filesystem::ifstream intextstream("test_output.txt");
+    boost::shared_ptr<InfoBase> baseptr1;
+    boost::shared_ptr<InfoBase> baseptr2;
     boost::archive::text_iarchive tar(intextstream);
 
       // load the data
@@ -35,26 +33,25 @@ int main(int argc, char** argv)
     tar & BOOST_SERIALIZATION_NVP(baseptr2);
 
     checkExtendedInfoCast(baseptr1);
-    checkExtendedInfoCast(baseptr2);
+    checkExtendedInfo2Cast(baseptr2);
   }
-
 
   
     // load from file->json->ptree
-  // boost::property_tree::ptree pt;
-  // boost::filesystem::ifstream injsonstream("test_output.json");
-  // read_json(injsonstream, pt);
-  // write_json(std::cout, pt);
-  // {  
-  //   bpta::ptree_iarchive jar(pt);
+  {  
+    boost::property_tree::ptree pt;
+    boost::filesystem::ifstream injsonstream("test_output.json");
+    read_json(injsonstream, pt);
+    write_json(std::cout, pt);
+    bpta::ptree_iarchive jar(pt);
 
-  //     // load the data
-  //   jar & BOOST_SERIALIZATION_NVP(baseptr1);
-  //   jar & BOOST_SERIALIZATION_NVP(baseptr2);
+      // load the data
+    jar & BOOST_SERIALIZATION_NVP(baseptr1);
+    jar & BOOST_SERIALIZATION_NVP(baseptr2);
 
-  //   checkExtendedInfoCast(baseptr1);
-  //   checkExtendedInfoCast(baseptr2);
-  // }
+    checkExtendedInfoCast(baseptr1);
+    checkExtendedInfo2Cast(baseptr2);
+  }
   
   return 0;  
 }
