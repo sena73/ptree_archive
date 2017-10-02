@@ -4,21 +4,26 @@
 #include <boost/serialization/shared_ptr.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 #include "ptree_oarchive.hh"
 #include "ptree_iarchive.hh"
+
+#ifdef TEXT_ARCHIVE
+ #include <boost/archive/text_iarchive.hpp>
+ #include <boost/archive/text_oarchive.hpp>
+#endif
 
 #include "infobase.hh"
 #include "test_derived_cast.hh"
    
 int main(int argc, char** argv)   
 {
-  boost::shared_ptr<InfoBase> baseptr1(createExtendedInfo ());
-  boost::shared_ptr<InfoBase> baseptr2(createExtendedInfo2());
 
+#ifdef TEXT_ARCHIVE
     // save to text file
   {
+    boost::shared_ptr<InfoBase>
+      baseptr1(createExtendedInfo ()), 
+      baseptr2(createExtendedInfo2());
     boost::filesystem::ofstream outtxtstream("test_output.txt");
     boost::archive::text_oarchive tar(outtxtstream);
 
@@ -26,12 +31,15 @@ int main(int argc, char** argv)
     tar & BOOST_SERIALIZATION_NVP(baseptr1);
     tar & BOOST_SERIALIZATION_NVP(baseptr2);
   }
-
+#endif  
 
     // save to ptree->json->file
-  boost::property_tree::ptree pt;
-  std::string outjson;
   {  
+    boost::shared_ptr<InfoBase>
+      baseptr1(createExtendedInfo ()), 
+      baseptr2(createExtendedInfo2());
+    boost::property_tree::ptree pt;
+    std::string outjson;
     bpta::ptree_oarchive jar(pt);
 
       // save the data

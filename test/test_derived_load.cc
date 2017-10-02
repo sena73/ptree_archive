@@ -3,24 +3,24 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/serialization/shared_ptr.hpp>
 #include <boost/serialization/vector.hpp>
+
+#ifdef TEXT_ARCHIVE
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#endif // TEXT_ARCHIVE
+
 #include "ptree_oarchive.hh"
 #include "ptree_iarchive.hh"
 
 
 #include "infobase.hh"
-#include "extended_info.hh"
-#include "extended_info2.hh"
 #include "test_derived_cast.hh"
-
-//BOOST_SERIALIZATION_ASSUME_ABSTRACT(InfoBase);
-
 
 int main(int argc, char** argv)   
 {
 
 
+#ifdef TEXT_ARCHIVE
     // load from text file
   {  
     boost::shared_ptr<InfoBase> baseptr1, baseptr2;
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     checkExtendedInfoCast(baseptr1);
     checkExtendedInfo2Cast(baseptr2);
   }
-
+#endif
   
     // load from file->json->ptree
   {  
