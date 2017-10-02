@@ -1,6 +1,3 @@
-#define BOOST_SERIALIZATION_DYN_LINK 1
-
-
 #include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/filesystem/fstream.hpp>

@@ -1,3 +1,4 @@
+#include <boost/serialization/vector.hpp>
 #include "infobase.hh"
 
 InfoBase::InfoBase(int setint, float setfloat, const std::string &setstring)
@@ -45,3 +46,9 @@ void InfoBase::AddFilename( const std::string& filename )
   filenames.push_back( filename );
 }
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include "ptree_oarchive.hh"
+#include "ptree_iarchive.hh"
+
+BOOST_CLASS_EXPORT_IMPLEMENT(InfoBase);

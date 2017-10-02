@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/nvp.hpp>
+#include <boost/serialization/export.hpp>
 
 class InfoBase  
 {
@@ -36,5 +37,7 @@ private:
   float m_float;
   std::string m_string;
 };
+
+BOOST_CLASS_EXPORT_KEY(InfoBase);
 
 #endif

@@ -2,6 +2,8 @@
 #include <boost/serialization/config.hpp>
 
 #include "ptree_iarchive.hh"
+#include <boost/archive/archive_exception.hpp>
+
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/basic_text_iprimitive.hpp>
@@ -95,8 +97,13 @@ namespace bpta {
   void ptree_iarchive::load_override(boost::archive::class_name_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     std::string sval;
+    sval.reserve(BOOST_SERIALIZATION_MAX_KEY_SIZE);
     read_attribute(ptree_archive_class_name, sval);
-    val = boost::archive::class_name_type(sval.c_str());
+    if(sval.size() > (BOOST_SERIALIZATION_MAX_KEY_SIZE - 1))
+        boost::serialization::throw_exception(
+					boost::archive::archive_exception(boost::archive::archive_exception::invalid_class_name)
+        );
+    std::strncpy(val, sval.c_str(), sval.size());
   }
 
   void ptree_iarchive::load_override(boost::archive::tracking_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)

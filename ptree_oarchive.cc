@@ -3,7 +3,7 @@
 
 #include "ptree_oarchive.hh"
 #include <boost/archive/detail/archive_serializer_map.hpp>
-#include <boost/archive/detail/auto_link_archive.hpp>
+//#include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/basic_text_oprimitive.hpp>
 
 // explicitly instantiate for this type of ptree
