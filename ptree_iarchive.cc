@@ -103,7 +103,7 @@ namespace bpta {
         boost::serialization::throw_exception(
 					boost::archive::archive_exception(boost::archive::archive_exception::invalid_class_name)
         );
-    std::strncpy(val, sval.c_str(), sval.size());
+    std::strncpy(val, sval.c_str(), sval.size()+1);
   }
 
   void ptree_iarchive::load_override(boost::archive::tracking_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
