@@ -1,9 +1,26 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #ifndef __PTREE_IARCHIVE_HH__
 #define __PTREE_IARCHIVE_HH__
 
-//#include <iostream> // std::cout
 #include <ostream>
-#include <cstddef> // size_t
+#include <cstddef>
 
 #include <boost/mpl/assert.hpp>
 #include <boost/archive/detail/common_iarchive.hpp>
@@ -39,7 +56,7 @@ namespace bpta {
     sz = toset;
   }
 
-  
+
   class ptree_iarchive : public boost::archive::detail::common_iarchive<ptree_iarchive>
 #if BOOST_VERSION <= 105500
 	, public boost::archive::detail::shared_ptr_helper
@@ -53,7 +70,7 @@ namespace bpta {
     const boost::property_tree::ptree *m_cur_pt;
     boost::property_tree::ptree::const_assoc_iterator m_item_assoc_it, m_it_nf;
       //    boost::property_tree::ptree::const_iterator m_item_std_it;
-  
+
     void init();
     void read_attribute(const char *attribute_name, const char *alt_attribute_name, int &t);
     void read_attribute(const char *attribute_name, std::string &val);
@@ -115,7 +132,7 @@ namespace bpta {
         //     return;
         //   }
         // }
-	
+
           // it is array
         const boost::property_tree::ptree *save_cur_pt = m_cur_pt;
         m_cur_pt = &m_item_assoc_it->second;
@@ -130,7 +147,7 @@ namespace bpta {
         m_cur_pt = save_cur_pt;
         return;
       }
-      
+
       // normal entry
       boost::property_tree::ptree::const_assoc_iterator it = m_cur_pt->find(tname);
       if(it == m_cur_pt->not_found())
@@ -169,7 +186,7 @@ namespace bpta {
   public:
     ptree_iarchive(const boost::property_tree::ptree &pt, unsigned int flags = 0);
     ~ptree_iarchive();
-    
+
     template<class T>
     void load(T & t) {
       t = m_cur_pt->get_value<T>();

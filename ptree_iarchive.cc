@@ -1,3 +1,21 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #define BOOST_ARCHIVE_SOURCE
 #include <boost/serialization/config.hpp>
 
@@ -35,19 +53,19 @@ namespace bpta {
   {
     static const int default_val = 0;
     retval = default_val;
-    
+
       // TODO: default val==0 is OK only for "optimized-0" values (defined now in ptree_oarchive.cc ctor)
     if(attr_name == 0)
     {
       throw std::logic_error("attr_name is 0");
     }
-    
+
     boost::optional<int> optval = m_cur_pt->get_optional<int>(attr_name);
     if(!optval && alt_attr_name)
     {
       optval = m_cur_pt->get_optional<int>(alt_attr_name);
     }
-    
+
     if(optval)
     {
       retval = *optval;
@@ -61,7 +79,7 @@ namespace bpta {
     {
       throw std::logic_error("attribute_name is 0");
     }
-    
+
     key = m_cur_pt->get<std::string>(attribute_name, std::string(""));
   }
 
@@ -93,7 +111,7 @@ namespace bpta {
   {
      // empty in xml_iarchive... not sure what is it for? - sena
   }
- 
+
   void ptree_iarchive::load_override(boost::archive::class_name_type &val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
     std::string sval;
@@ -121,30 +139,30 @@ namespace bpta {
 
   class load_bin : public boost::archive::basic_text_iprimitive<std::istringstream>
   {
-    
+
   public:
     load_bin(std::istringstream &iss)
       : boost::archive::basic_text_iprimitive<std::istringstream>(iss, true)
       {}
-    
+
     ~load_bin()
       {}
   };
-  
-  
+
+
   void ptree_iarchive::load_binary(void *address, std::size_t count)
   {
     std::istringstream iss(m_cur_pt->get_value<std::string>());
     load_bin lb(iss);
     lb.load_binary(address, count);
   }
-  
+
   ptree_iarchive::~ptree_iarchive()
   {
     if(std::uncaught_exception())
       return;
   }
-  
+
 } // namespace bpta
 
 namespace boost {

@@ -1,3 +1,21 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #define BOOST_ARCHIVE_SOURCE
 #include <boost/serialization/config.hpp>
 
@@ -56,8 +74,8 @@ namespace bpta {
 
     write_attribute(ptree_archive_version, boost::archive::BOOST_ARCHIVE_VERSION());
   }
-  
-  
+
+
   void ptree_oarchive::write_attribute(const char *attribute_name, int val)
   {
     if(val != 0 || !m_optimize0)
@@ -110,7 +128,7 @@ namespace bpta {
   {
     write_attribute(ptree_archive_class_id, val);
   }
- 
+
 
   void ptree_oarchive::save_override(const boost::archive::class_name_type & val OVERRIDE_OLD_PARAM_TYPE_EMPTY)
   {
@@ -124,7 +142,7 @@ namespace bpta {
   }
 
   class save_bin : public boost::archive::basic_text_oprimitive<std::ostringstream>
-  { 
+  {
   public:
     save_bin(std::ostringstream &oss)
       : boost::archive::basic_text_oprimitive<std::ostringstream>(oss, true)
@@ -133,8 +151,8 @@ namespace bpta {
     ~save_bin()
       {}
   };
-    
-  
+
+
   void
   ptree_oarchive::save_binary(const void *address, std::size_t count)
   {
@@ -158,6 +176,6 @@ namespace boost {
 //    template class basic_text_iarchive<text_iarchive> ;
 //    template class text_iarchive_impl<text_iarchive> ;
 			//template class ptree_oarchive_impl<ptree_oarchive> ;
-  
+
   } // namespace archive
 } // namespace boost

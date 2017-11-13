@@ -1,3 +1,21 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #ifndef __PTREE_OARCHIVE_HH__
 #define __PTREE_OARCHIVE_HH__
 
@@ -31,7 +49,7 @@ namespace bpta {
     bool m_optimizeJson; ///< if true , then store containers in json-friendly way (list of values with empty name), otherwise store container in xml-friendly way (list of values with the name equal to 'item')
     std::set<std::string> m_opt0;
     std::set<std::string> m_reserved; ///< reserved names (not allowed to use as field name)
-    
+
     void init();
     void write_attribute(const char *attribute_name, int t);
     void write_attribute(const char *attribute_name, const char *key);
@@ -110,7 +128,7 @@ namespace bpta {
   public:
     ptree_oarchive(boost::property_tree::ptree &pt, unsigned int flags = 0);
     ~ptree_oarchive();
-    
+
     template<class T>
     void save(const T & t) {
       m_cur_pt->put_value(t);

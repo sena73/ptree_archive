@@ -1,3 +1,21 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #include <boost/assign/list_of.hpp>
 #include "test_all.hh"
 
@@ -18,16 +36,16 @@ bool TestAll::operator==(const TestAll &other) const
 
 void TestAll::populate_with_test_data()
 {
-  info1.AddFilename("ThisFile.txt" );  
-  info1.AddFilename("ThatFile.txt" );  
-  info1.AddFilename("OtherFile.txt");  
+  info1.AddFilename("ThisFile.txt" );
+  info1.AddFilename("ThatFile.txt" );
+  info1.AddFilename("OtherFile.txt");
   info1.set(1, 1.1, "one norm");
-    
+
   info2.AddFilename("ABC");
   info2.AddFilename("123");
   info2.AddFilename("XYZ");
   info2.set(2, 2.2, "two norm");
- 
+
   infs.push_back(info1);
   infs.push_back(info2 );
 
@@ -40,14 +58,14 @@ void TestAll::populate_with_test_data()
     infop1(new ExtendedInfo(1, 1.1, "one ptr", "extended1")),
     infop2(new ExtendedInfo(2, 2.2, "two ptr", "extended2"));
 
-  infop1->AddFilename( "ThisFile.txt" );  
-  infop1->AddFilename( "ThatFile.txt" );  
-  infop1->AddFilename( "OtherFile.txt" );  
- 
+  infop1->AddFilename( "ThisFile.txt" );
+  infop1->AddFilename( "ThatFile.txt" );
+  infop1->AddFilename( "OtherFile.txt" );
+
   infop2->AddFilename( "ABC" );
   infop2->AddFilename( "123" );
   infop2->AddFilename( "XYZ" );
- 
+
   infosp.push_back( infop1 );
   infosp.push_back( infop2 );
 

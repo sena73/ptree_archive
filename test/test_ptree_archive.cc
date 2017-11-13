@@ -1,3 +1,21 @@
+/* Copyright (C) 2017 Sergey Spiridonov
+ *
+ * This file is part of bpta (ptree_archive) library.
+ *
+ * bpta is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bpta is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bpta.  If not, see <http://www.gnu.org/licenses/>.
+ * */
+
 #include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 
@@ -6,17 +24,17 @@
 
 #include "test_all.hh"
 
-   
-int main(int argc, char** argv)   
+
+int main(int argc, char** argv)
 {
   TestAll test_all, test_all_restored;
 
-  test_all.populate_with_test_data();    
+  test_all.populate_with_test_data();
 
     // save to ptree and json
   boost::property_tree::ptree pt;
   std::string outjson;
-  {  
+  {
     bpta::ptree_oarchive jar(pt);
 
       // save the data
@@ -33,8 +51,8 @@ int main(int argc, char** argv)
     // read from ptree
   {
     bpta::ptree_iarchive jar(pt);
-   
-      // Load the data  
+
+      // Load the data
     jar & boost::serialization::make_nvp("test_all"  , test_all_restored);
   }
 
@@ -52,7 +70,7 @@ int main(int argc, char** argv)
   std::cout << "comparing ptrees:" << std::endl;
   boost::property_tree::ptree pt2;
   std::string outjson2;
-  {  
+  {
     bpta::ptree_oarchive jar(pt2);
 
     jar & boost::serialization::make_nvp("test_all", test_all_restored);
@@ -69,7 +87,7 @@ int main(int argc, char** argv)
   else
   {
     std::cout << "ptrees are NOT equal" << std::endl;
-  }  
+  }
 
   std::cout << "comparing jsons:" << std::endl;
   if(outjson == outjson2)
@@ -82,6 +100,6 @@ int main(int argc, char** argv)
     std::cout << "json1:\n" << outjson << "\n";
     std::cout << "json2:\n" << outjson2 << "\n";
   }
-  
-  return 0;  
+
+  return 0;
 }
