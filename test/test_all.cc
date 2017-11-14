@@ -84,7 +84,6 @@ void TestAll::populate_with_test_data()
   maplistvector1[l_12b] = v_1a2;
   maplistvector2[l_21a] = v_2b1;
   maplistvector2[l_21b] = v_2a2;
-  std::set<std::map<std::list<std::string>, std::vector<std::string> > > setmaplistvector, restored_setmaplistvector;
   setmaplistvector.insert(maplistvector1);
   setmaplistvector.insert(maplistvector2);
 }
