@@ -21,7 +21,7 @@
 
 #include <boost/version.hpp>
 
-#if BOOST_VERSION <= 105500
+#if BOOST_VERSION <= 105800
  #define OVERRIDE_OLD_PARAM_TYPE_EMPTY , int
  #define OVERRIDE_OLD_PARAM_TYPE , int override_old_param
  #define OVERRIDE_OLD_PARAM_PASS , override_old_param

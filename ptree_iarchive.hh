@@ -30,8 +30,11 @@
 #include <boost/serialization/item_version_type.hpp>
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
+#include <boost/version.hpp>
 #if BOOST_VERSION <= 105500
 #include <boost/archive/shared_ptr_helper.hpp>
+#elif BOOST_VERSION <= 105800
+#include <boost/serialization/shared_ptr_helper.hpp>
 #endif
 #include <boost/property_tree/ptree.hpp>
 #include "basic_ptree_archive.hh"

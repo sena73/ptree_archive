@@ -1,5 +1,5 @@
 # Untested with previous versions, yet should work
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 
 #set (CMAKE_CXX_FLAGS "-ftemplate-backtrace-limit=0")
 
