@@ -9,3 +9,9 @@ target_link_libraries(bpta_test_derived_load bpta)
 
 add_executable(bpta_test_derived_saveload extended_info2.cc extended_info.cc test_derived_saveload.cc infobase.cc test_derived_cast.cc)
 target_link_libraries(bpta_test_derived_saveload bpta)
+
+add_executable(bpta_test_version_save test_version_save.cc)
+target_link_libraries(bpta_test_version_save bpta)
+
+add_executable(bpta_test_version_load test_version_load.cc)
+target_link_libraries(bpta_test_version_load bpta)
