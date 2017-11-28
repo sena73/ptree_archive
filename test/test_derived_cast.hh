@@ -1,4 +1,4 @@
-/* Copyright (C) 2017 Sergey Spiridonov <sena@s73.work>
+/* Copyright (C) 2017 Sergey Spiridonov (sena at s73 dot work)
  *
  * This file is part of bpta (ptree_archive) library.
  *
