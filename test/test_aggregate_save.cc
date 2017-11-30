@@ -50,18 +50,11 @@ int main(int argc, char** argv)
     jar & boost::serialization::make_nvp("aggregate"  , aggregate_restored);
   }
 
-  std::cout << "comparing objects:" << std::endl;
-  if(aggregate == aggregate_restored)
+  if(!(aggregate == aggregate_restored))
   {
-    std::cout << "original and loaded are equal" << std::endl;
-  }
-  else
-  {
-    std::cout << "original and loaded are NOT equal" << std::endl;
+    throw std::runtime_error("original and loaded objects are NOT equal");
   }
 
-
-  std::cout << "comparing ptrees:" << std::endl;
   boost::property_tree::ptree pt2;
   std::string outjson2;
   {
@@ -74,25 +67,17 @@ int main(int argc, char** argv)
     outjson2 = outjsonstream.str();
   }
 
-  if(pt == pt2)
+  if(pt != pt2)
   {
-    std::cout << "ptrees are equal" << std::endl;
-  }
-  else
-  {
-    std::cout << "ptrees are NOT equal" << std::endl;
+    throw std::runtime_error("original and loaded ptrees are NOT equal");
   }
 
-  std::cout << "comparing jsons:" << std::endl;
-  if(outjson == outjson2)
+  if(outjson != outjson2)
   {
-    std::cout << "jsons are equal" << std::endl;
-  }
-  else
-  {
-    std::cout << "jsons are NOT equal!\n";
-    std::cout << "json1:\n" << outjson << "\n";
-    std::cout << "json2:\n" << outjson2 << "\n";
+    std::cerr << "jsons are NOT equal!\n";
+    std::cerr << "json1:\n" << outjson << "\n";
+    std::cerr << "json2:\n" << outjson2 << "\n";
+    throw std::runtime_error("original and loaded jsons are equal");
   }
 
   return 0;

@@ -25,7 +25,6 @@ int main(int argc, char** argv)
     boost::property_tree::ptree pt;
     boost::filesystem::ifstream injsonstream("derived.json");
     read_json(injsonstream, pt);
-    write_json(std::cout, pt);
     bpta::ptree_iarchive jar(pt);
 
       // load the data

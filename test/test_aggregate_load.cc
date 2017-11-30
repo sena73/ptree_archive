@@ -29,5 +29,13 @@ int main(int argc, char** argv)
     jar >> BOOST_SERIALIZATION_NVP(aggregate);
   }
 
+  Aggregate aggregate_orig;
+  aggregate_orig.populate_with_test_data();
+  
+  if(!(aggregate == aggregate_orig))
+  {
+    throw std::runtime_error("original and loaded objects are NOT equal");
+  }
+
   return 0;  
 }
