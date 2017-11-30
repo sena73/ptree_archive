@@ -7,10 +7,10 @@
  */
 
 #include <boost/assign/list_of.hpp>
-#include "test_all.hh"
+#include "aggregate.hh"
 
 
-bool TestAll::operator==(const TestAll &other) const
+bool Aggregate::operator==(const Aggregate &other) const
   {
     if(&other == this) return true;
     return
@@ -24,7 +24,7 @@ bool TestAll::operator==(const TestAll &other) const
   }
 
 
-void TestAll::populate_with_test_data()
+void Aggregate::populate_with_test_data()
 {
   info1.AddFilename("ThisFile.txt" );
   info1.AddFilename("ThatFile.txt" );

@@ -9,17 +9,18 @@
 #include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 
+#include <boost/filesystem/fstream.hpp>
 #include "ptree_oarchive.hh"
 #include "ptree_iarchive.hh"
 
-#include "test_all.hh"
+#include "aggregate.hh"
 
 
 int main(int argc, char** argv)
 {
-  TestAll test_all, test_all_restored;
+  Aggregate aggregate, aggregate_restored;
 
-  test_all.populate_with_test_data();
+  aggregate.populate_with_test_data();
 
     // save to ptree and json
   boost::property_tree::ptree pt;
@@ -28,26 +29,29 @@ int main(int argc, char** argv)
     bpta::ptree_oarchive jar(pt);
 
       // save the data
-    jar & BOOST_SERIALIZATION_NVP(test_all);
+    jar << BOOST_SERIALIZATION_NVP(aggregate);
 
       // get json
-    std::ostringstream outjsonstream;
-    write_json(outjsonstream, pt);
-    outjson = outjsonstream.str();
+    boost::filesystem::ofstream outjsonfstream("aggregate.json");
+    write_json(outjsonfstream, pt);
+
+    std::ostringstream outjsonsstream;
+    write_json(outjsonsstream, pt);
+    outjson = outjsonsstream.str();
   }
 
-  std::cout << "resulting JSON: " << outjson;
+  // std::cout << "resulting JSON: " << outjson;
 
     // read from ptree
   {
     bpta::ptree_iarchive jar(pt);
 
       // Load the data
-    jar & boost::serialization::make_nvp("test_all"  , test_all_restored);
+    jar & boost::serialization::make_nvp("aggregate"  , aggregate_restored);
   }
 
   std::cout << "comparing objects:" << std::endl;
-  if(test_all == test_all_restored)
+  if(aggregate == aggregate_restored)
   {
     std::cout << "original and loaded are equal" << std::endl;
   }
@@ -63,7 +67,7 @@ int main(int argc, char** argv)
   {
     bpta::ptree_oarchive jar(pt2);
 
-    jar & boost::serialization::make_nvp("test_all", test_all_restored);
+    jar & boost::serialization::make_nvp("aggregate", aggregate_restored);
 
     std::ostringstream outjsonstream;
     write_json(outjsonstream, pt2);

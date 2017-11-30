@@ -184,6 +184,14 @@ namespace bpta {
     void load(T & t) {
       t = m_cur_pt->get_value<T>();
     }
+#if BOOST_VERSION <= 104400
+    void 
+    load(boost::serialization::item_version_type & t){
+        unsigned int v;
+        load(v);
+        t = boost::serialization::item_version_type(v);
+    }
+#endif
 
     void load_binary(void *address, std::size_t count);
   };

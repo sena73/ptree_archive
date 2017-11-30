@@ -1,5 +1,5 @@
 # Untested with previous versions, yet should work
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.2)
 
 #set (CMAKE_CXX_FLAGS "-ftemplate-backtrace-limit=0")
 
@@ -7,7 +7,7 @@ project(bpta VERSION 1.0.1 LANGUAGES CXX)
 
 # Boost dependency
 set(BOOST_ROOT CACHE PATH "Path to Boost library")
-find_package(Boost 1.55 COMPONENTS serialization system)
+find_package(Boost 1.44 COMPONENTS serialization system)
 
 
 add_library(bpta SHARED ptree_oarchive.cc ptree_iarchive.cc basic_ptree_archive.cc)

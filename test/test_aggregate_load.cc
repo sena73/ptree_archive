@@ -9,40 +9,25 @@
 #include <iostream>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/serialization/shared_ptr.hpp>
-#include <boost/serialization/vector.hpp>
 
 #include "ptree_iarchive.hh"
+#include "aggregate.hh"
 
-
-struct A
-{
-  template<class Archive>
-  inline void serialize(Archive & ar, const unsigned int version )
-  {
-     ar & BOOST_SERIALIZATION_NVP(field);
-  }
-
-  int field;
-};
 
 int main(int argc, char** argv)
 {
-  A a1, a2;
+  Aggregate aggregate;
 
     // load from file->json->ptree
   {
     boost::property_tree::ptree pt;
-    boost::filesystem::ifstream injsonstream("version.json");
+    boost::filesystem::ifstream injsonstream("aggregate.json");
     read_json(injsonstream, pt);
-    write_json(std::cout, pt);
     bpta::ptree_iarchive jar(pt);
 
       // load the data
-    jar & BOOST_SERIALIZATION_NVP(a1);
-    jar & BOOST_SERIALIZATION_NVP(a2);
-
+    jar >> BOOST_SERIALIZATION_NVP(aggregate);
   }
 
-  return 0;
+  return 0;  
 }

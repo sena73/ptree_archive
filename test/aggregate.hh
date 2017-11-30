@@ -6,8 +6,8 @@
  * accompanying file COPYING
  */
 
-#ifndef __TESTALL_HH__
-#define __TESTALL_HH__
+#ifndef __AGGREGATE_HH__
+#define __AGGREGATE_HH__
 
 #include <set>
 #include <vector>
@@ -27,10 +27,10 @@ bool operator==(const boost::shared_ptr<A> &one, const boost::shared_ptr<A> &ano
   return (*one) == (*another);
 }
 
-class TestAll
+class Aggregate
 {
 public:
-  bool operator==(const TestAll &other) const;
+  bool operator==(const Aggregate &other) const;
 
   void populate_with_test_data();
 

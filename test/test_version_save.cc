@@ -13,14 +13,6 @@
 #include <boost/serialization/vector.hpp>
 
 #include "ptree_oarchive.hh"
-#include "ptree_iarchive.hh"
-
-//#define XML_ARCHIVE 1
-#ifdef XML_ARCHIVE
- #include <boost/archive/xml_iarchive.hpp>
- #include <boost/archive/xml_oarchive.hpp>
-#endif
-
 
 struct A
 {
@@ -37,7 +29,9 @@ struct A
   int field2;
 };
 
+#if BOOST_VERSION > 104400
 BOOST_CLASS_VERSION(A, 1)
+#endif
 
 int main(int argc, char** argv)
 {
@@ -47,18 +41,6 @@ int main(int argc, char** argv)
   a2.field = 2;
   a1.field2 = 21;
   a2.field2 = 22;
-
-#ifdef XML_ARCHIVE
-    // save to xml file
-  {
-    boost::filesystem::ofstream outxmlstream("test_version.xml");
-    boost::archive::xml_oarchive xar(outxmlstream);
-
-      // save the data
-    xar & BOOST_SERIALIZATION_NVP(a1);
-    xar & BOOST_SERIALIZATION_NVP(a2);
-  }
-#endif
 
     // save to ptree->json->file
   {
@@ -71,7 +53,7 @@ int main(int argc, char** argv)
     jar & BOOST_SERIALIZATION_NVP(a2);
 
       // get json
-    boost::filesystem::ofstream outjsonstream("test_version.json");
+    boost::filesystem::ofstream outjsonstream("version.json");
     write_json(outjsonstream, pt);
   }
 

@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include "extended_info.hh"
 #include "extended_info2.hh"
-#include "test_derived_cast.hh"
+#include "derived_cast.hh"
 
 boost::shared_ptr<InfoBase> createExtendedInfo ()
 {
