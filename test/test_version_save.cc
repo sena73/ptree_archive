@@ -29,9 +29,11 @@ struct A
   int field2;
 };
 
-#if BOOST_VERSION > 104400
-BOOST_CLASS_VERSION(A, 1)
-#endif
+// if following is enabled, it will break loading of the class using 
+// boost 1.44, but not boost 1.62:
+//
+//BOOST_CLASS_VERSION(A, 1)
+
 
 int main(int argc, char** argv)
 {
